@@ -1,0 +1,54 @@
+# Basic policy example — block by domain and category
+# Run: flow-swg --urldb --policy examples/basic/policy.yaml
+
+version: 1
+rules:
+  - id: block-adult
+    name: Block adult content
+    priority: 1
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: adult
+
+  - id: block-gambling
+    name: Block gambling
+    priority: 2
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: gambling
+
+  - id: block-malware
+    name: Block malware
+    priority: 3
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: malware
+
+  - id: block-phishing
+    name: Block phishing
+    priority: 4
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: phishing
+
+  - id: block-facebook
+    name: Block Facebook
+    priority: 10
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: domain
+        value: "*.facebook.com"

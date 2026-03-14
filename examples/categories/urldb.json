@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "domains": {
+    "pornhub.com": ["adult"],
+    "xvideos.com": ["adult"],
+    "bet365.com": ["gambling"],
+    "draftkings.com": ["gambling"],
+    "malware-test.example": ["malware"],
+    "evil-download.example": ["malware"],
+    "facebook.com": ["social_media"],
+    "instagram.com": ["social_media"],
+    "tiktok.com": ["social_media", "short_video"]
+  },
+  "path_rules": {
+    "youtube.com": [
+      {"pattern": "/shorts/*", "categories": ["short_video"]}
+    ]
+  }
+}

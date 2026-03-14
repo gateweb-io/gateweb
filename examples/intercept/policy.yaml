@@ -1,0 +1,105 @@
+# Intercept policy — enables TLS inspection for full URL visibility
+# This policy uses path/URL conditions which require MITM to inspect.
+#
+# Run:
+#   go run ./cmd/native \
+#     --addr 127.0.0.1:9080 \
+#     --policy examples/intercept/policy.yaml \
+#     --urldb \
+#     --control-port 8765
+
+version: 1
+rules:
+  # --- Security: block known bad categories ---
+  - id: block-adult
+    name: Block adult content
+    priority: 1
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: adult
+
+  - id: block-malware
+    name: Block malware
+    priority: 2
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: malware
+
+  - id: block-phishing
+    name: Block phishing
+    priority: 3
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: category
+        value: phishing
+
+  # --- URL-level rules (require TLS inspection) ---
+  - id: block-chatgpt-api
+    name: Block ChatGPT API conversations
+    priority: 10
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: url
+        value: "chatgpt.com/backend-api/*"
+
+  - id: block-gdrive-upload
+    name: Block Google Drive uploads
+    priority: 11
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: url
+        value: "*.google.com/upload/*"
+
+  # --- Path-based rules ---
+  - id: block-admin-panels
+    name: Block admin panels
+    priority: 20
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: path
+        value: "/admin/*"
+
+  - id: block-wp-login
+    name: Block WordPress login
+    priority: 21
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: path
+        value: "/wp-login.php"
+
+  # --- Domain rules (work at CONNECT level too) ---
+  - id: block-facebook
+    name: Block Facebook
+    priority: 50
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: domain
+        value: "*.facebook.com"
+
+  - id: block-tiktok
+    name: Block TikTok
+    priority: 51
+    enabled: true
+    type: access
+    action: block
+    conditions:
+      - type: domain
+        value: "*.tiktok.com"

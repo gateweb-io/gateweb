@@ -1,0 +1,43 @@
+# Category-based policy — block by URL category (requires --urldb)
+# Run: flow-swg --urldb --policy examples/categories/policy.yaml
+
+version: 1
+rules:
+  - id: block-adult
+    name: Block adult content
+    priority: 1
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: adult
+
+  - id: block-gambling
+    name: Block gambling
+    priority: 2
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: gambling
+
+  - id: block-malware
+    name: Block malware
+    priority: 3
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: malware

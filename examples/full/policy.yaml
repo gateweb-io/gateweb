@@ -1,0 +1,96 @@
+# Full policy example — combines domain, category, and app conditions
+# with event logging to file.
+#
+# Run:
+#   flow-swg \
+#     --addr 127.0.0.1:9080 \
+#     --policy examples/full/policy.yaml \
+#     --urldb examples/categories/urldb.json \
+#     --event-file /tmp/swg-events.jsonl \
+#     --event-filter all \
+#     --control-port 8765
+
+version: 1
+rules:
+  # --- Security ---
+  - id: block-malware
+    name: Block malware domains
+    priority: 1
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: malware
+
+  # --- Compliance ---
+  - id: block-adult
+    name: Block adult content
+    priority: 10
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: adult
+
+  - id: block-gambling
+    name: Block gambling
+    priority: 11
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: gambling
+
+  # --- Productivity ---
+  - id: block-social-media
+    name: Block social media
+    priority: 20
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: social_media
+
+  # --- Domain-level overrides ---
+  - id: block-specific-domain
+    name: Block specific test domain
+    priority: 100
+    enabled: true
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: domain
+        value: "*.blocked-example.com"
+
+  # --- Disabled rule (for reference) ---
+  - id: block-news
+    name: Block news sites (disabled)
+    priority: 50
+    enabled: false
+    type: access
+    action: block
+    targets:
+      - type: all
+        id: ""
+    conditions:
+      - type: category
+        value: news
